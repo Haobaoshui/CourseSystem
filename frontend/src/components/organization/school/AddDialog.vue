@@ -1,0 +1,67 @@
+<template>
+  <div>
+    <el-dialog
+      title="添加学院"
+      :visible.sync="isDialogVisible"
+      :before-close="handleClose"
+      width="600px"
+      @open="onOpenDialog"
+    >
+      <el-form label-position="right" label-width="120px" :model="form" ref="form">
+        <el-form-item label="学院名称" prop="name" required>
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="备注" prop="note">
+          <el-input v-model="form.note"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="onOkBtnClick()">确 定</el-button>
+        <el-button @click="onCancel">取 消</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import BASEURL from "@/httpconfig/api.js";
+export default {
+  name: "AddDialog",
+  components: {},
+  props: { dialogVisible: Boolean },
+  computed: {
+    isDialogVisible: function() {
+      return this.dialogVisible;
+    },
+    projectName: function() {
+      if (this.isNull(this.school)) return "";
+      return this.school.name;
+    }
+  },
+  data() {
+    return {
+      form: {
+        name: "",
+        note: ""
+      }
+    };
+  },
+  mounted() {},
+
+  methods: {
+    onOpenDialog() {},
+    handleClose() {
+      this.$emit("onDilalogCancel");
+    },
+    onOkBtnClick() {
+      this.addSchoolDataToServer(this.form.name, this.form.note);
+    },
+    onCancel() {
+      this.$emit("onDilalogCancel");
+    },
+    onOk() {
+      this.$emit("onDilalogOk");
+    }
+  }
+};
+</script>
